@@ -95,7 +95,7 @@ cargo build --target Nun/arch/{arch}-unknown-a9n.json -Z build-std-features=comp
 
 ```
 
-### Author
+## Author
 
 Email : rekka728 "at" gmail.com  
 X : [@horizon2k38](https://x.com/horizon2k38)  
