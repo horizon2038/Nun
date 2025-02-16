@@ -67,7 +67,7 @@ mkdir .cargo/
 cp -r Nun/.cargo/config.toml ./.cargo/
 ```
 
-### 4. Write your OS
+### 5. Write your OS
 
 #### Code Example - `your-os/src/main.rs`
 
@@ -88,11 +88,14 @@ fn main(init_info: &nun::InitInfo) {
 }
 ```
 
-###  5. Build
+###  6. Build
 
 ```bash
 cargo build --target Nun/arch/{arch}-unknown-a9n.json -Z build-std-features=compiler-builtins-mem --release
+
 ```
+
+### Author
 
 Email : rekka728 "at" gmail.com  
 X : [@horizon2k38](https://x.com/horizon2k38)  
