@@ -1,0 +1,9 @@
+[env]
+CARGO_WORKSPACE_DIR = { value = ".", relative = true }
+
+[unstable]
+build-std = ["core", "compiler_builtins"]
+
+# default target
+[build]
+target = "x86_64-unknown-a9n"
