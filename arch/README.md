@@ -1,4 +1,4 @@
-# KOITO/arch
+# Nun/arch
 
 Directory for Architecture-Specific builds. 
 It contains Architecture/Platform Specific Linker Scripts and so on.
