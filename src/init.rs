@@ -22,15 +22,14 @@ pub struct InitInfo {
 
     // ipc buffer
     pub ipc_buffer: *mut IpcBuffer,
-    pub frame_ipc_buffer: CapabilityDescriptor,
+    // pub frame_ipc_buffer: CapabilityDescriptor,
 
     // initial generics
     pub generic_list: [GenericDescriptor; 128],
-    pub generic_start: CapabilityDescriptor,
+    // pub generic_start: CapabilityDescriptor,
     pub generic_list_count: Word,
-
     // initial interrupt ports
-    pub interrupt_port_list: [InterruptPortDescriptor; 128],
+    // pub interrupt_port_list: [InterruptPortDescriptor; 128],
 }
 
 impl InitInfo {
