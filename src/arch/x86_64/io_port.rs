@@ -4,10 +4,16 @@ use crate::capability_call::io_port;
 use crate::types::*;
 
 #[inline(always)]
-pub fn read(target: CapabilityDescriptor, address: Word, data: &mut Word) -> CapabilityResult {
+pub fn read(
+    target: CapabilityDescriptor,
+    address: Word,
+    byte_width: Word,
+    data: &mut Word,
+) -> CapabilityResult {
     let mut a0 = target;
     let mut a1 = io_port::OperationType::Read as Word;
     let mut a2 = address;
+    let mut a3 = byte_width;
 
     unsafe {
         asm!(
@@ -16,6 +22,7 @@ pub fn read(target: CapabilityDescriptor, address: Word, data: &mut Word) -> Cap
         inout("rsi") a0 => a0, // descriptor -> is_success
         inout("rdx") a1 => a1, // oepration  -> capablity_error
         inout("r8")  a2 => a2, // address
+        inout("r9")  a3 => a3, // byte_width
         out("rax") _,
         out("rcx") _,
         out("r11") _,
@@ -29,11 +36,17 @@ pub fn read(target: CapabilityDescriptor, address: Word, data: &mut Word) -> Cap
 }
 
 #[inline(always)]
-pub fn write(target: CapabilityDescriptor, address: Word, data: Word) -> CapabilityResult {
+pub fn write(
+    target: CapabilityDescriptor,
+    address: Word,
+    byte_width: Word,
+    data: Word,
+) -> CapabilityResult {
     let mut a0 = target;
     let mut a1 = io_port::OperationType::Write as Word;
     let mut a2 = address;
-    let mut a3 = data;
+    let mut a3 = byte_width;
+    let mut a4 = data;
 
     unsafe {
         asm!(
@@ -42,7 +55,8 @@ pub fn write(target: CapabilityDescriptor, address: Word, data: Word) -> Capabil
         inout("rsi") a0 => a0, // descriptor -> is_success
         inout("rdx") a1 => a1, // oepration  -> capablity_error
         in("r8")  a2,          // address
-        in("r9")  a3,        // data
+        in("r9")  a3,        // byte_width
+        in("r10")  a4,        // data
         out("rax") _,
         out("rcx") _,
         out("r11") _,
