@@ -3,7 +3,7 @@ use core::arch::asm;
 use crate::types::*;
 
 #[inline(always)]
-fn cycle_counter() -> Word {
+pub fn cycle_counter() -> Word {
     let eax: Word;
     let edx: Word;
     unsafe {
