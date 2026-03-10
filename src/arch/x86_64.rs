@@ -17,3 +17,6 @@ pub mod debug_call;
 
 // benchmark
 pub mod benchmark;
+
+// abi
+pub mod ipc_buffer;
