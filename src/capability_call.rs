@@ -6,3 +6,4 @@ pub mod ipc_port;
 pub mod node;
 pub mod notification_port;
 pub mod process_control_block;
+pub mod virtual_cpu;
