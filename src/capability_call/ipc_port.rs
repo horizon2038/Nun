@@ -11,7 +11,7 @@ pub enum OperationType {
     Identify,
 }
 
-#[derive(Clone)]
+#[derive(Debug, Clone)]
 pub struct MessageInfo {
     pub data: Word,
 }

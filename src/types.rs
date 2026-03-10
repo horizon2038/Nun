@@ -15,6 +15,7 @@ pub enum KernelCallType {
 
 // capability types
 
+#[derive(Debug, Clone, Copy)]
 #[repr(usize)]
 pub enum CapabilityType {
     // reserved
