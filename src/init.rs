@@ -1,6 +1,7 @@
 use crate::ipc_buffer::*;
 use crate::types::*;
 
+#[derive(Debug, Clone, Copy)]
 #[repr(C)]
 pub struct GenericDescriptor {
     pub address: PhysicalAddress,
@@ -8,17 +9,21 @@ pub struct GenericDescriptor {
     pub is_device: bool,
 }
 
+#[derive(Debug, Clone, Copy)]
 #[repr(C)]
 pub struct InterruptPortDescriptor {
     irq_number: Word,
 }
 
+pub const ARCH_INFO_MAX: usize = 128;
+
+#[derive(Debug, Clone, Copy)]
 #[repr(C)]
 pub struct InitInfo {
     // kernel description
     pub kernel_version: Word,
 
-    pub arch_info: [Word; 8],
+    pub arch_info: [Word; ARCH_INFO_MAX],
 
     // ipc buffer
     pub ipc_buffer: *mut IpcBuffer,
