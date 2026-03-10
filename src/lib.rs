@@ -17,6 +17,9 @@ pub use types::*;
 mod init;
 pub use init::*;
 
+mod frame_buffer_info;
+pub use frame_buffer_info::*;
+
 mod ipc_buffer;
 pub use ipc_buffer::*;
 
