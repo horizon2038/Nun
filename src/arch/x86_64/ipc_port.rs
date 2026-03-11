@@ -26,17 +26,16 @@ fn execute_ipc(
     unsafe {
         asm!(
         "syscall",
-        in("rdi") KernelCallType::CapabilityCall as Sword,
-        inout("rsi") a0 => a0, // descriptor -> is_success
-        inout("rdx") a1 => a1, // oepration  -> capablity_error
-        inout("r8")  a2 => a2, // info
-        out("r9")    a3, // identifier (receive)
+        in("rax") KernelCallType::CapabilityCall as Sword,
+        inout("rdi") a0 => a0, // descriptor -> is_success
+        inout("rsi") a1 => a1, // oepration  -> capablity_error
+        inout("rdx") a2 => a2, // info
+        out("r8")    a3,       // identifier (receive)
         // inout("r10") a4 => a4,
         // inout("r12") a5 => a5,
         // inout("r13") a6 => a6,
         // inout("r14") a7 => a7,
         // inout("r15") a8 => a8,
-        out("rax") _,
         out("rcx") _,
         out("r11") _,
         options(nostack),
@@ -118,11 +117,10 @@ pub fn identify(descriptor: CapabilityDescriptor, new_identifier: Word) -> Capab
     unsafe {
         asm!(
         "syscall",
-        in("rdi") KernelCallType::CapabilityCall as Sword,
-        inout("rsi") a0 => a0, // descriptor -> is_success
-        inout("rdx") a1 => a1, // oepration  -> capablity_error
-        in("r8")     a2,       // identifier
-        out("rax") _,
+        in("rax") KernelCallType::CapabilityCall as Sword,
+        inout("rdi") a0 => a0, // descriptor -> is_success
+        inout("rsi") a1 => a1, // oepration  -> capablity_error
+        in("rdx")     a2,      // identifier
         out("rcx") _,
         out("r11") _,
         options(nostack),
