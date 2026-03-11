@@ -21,13 +21,12 @@ fn execute_destination_and_source(
     unsafe {
         asm!(
         "syscall",
-        in("rdi") KernelCallType::CapabilityCall as Sword,
-        inout("rsi") a0 => a0, // descriptor -> is_success
-        inout("rdx") a1 => a1, // oepration  -> capablity_error
-        in("r8")  a2, // destination index
-        in("r9")  a3, // source node
-        in("r10") a4, // rights
-        out("rax") _,
+        in("rax") KernelCallType::CapabilityCall as Sword,
+        inout("rdi") a0 => a0, // descriptor -> is_success
+        inout("rsi") a1 => a1, // oepration  -> capablity_error
+        in("rdx")  a2, // destination index
+        in("r8")  a3, // source node
+        in("r9") a4, // rights
         out("rcx") _,
         out("r11") _,
         options(nostack),
@@ -51,11 +50,10 @@ fn execute_destination(
     unsafe {
         asm!(
         "syscall",
-        in("rdi") KernelCallType::CapabilityCall as Sword,
-        inout("rsi") a0 => a0, // descriptor -> is_success
-        inout("rdx") a1 => a1, // oepration  -> capablity_error
-        in("r8")  a2, // destination index
-        out("rax") _,
+        in("rax") KernelCallType::CapabilityCall as Sword,
+        inout("rdi") a0 => a0, // descriptor -> is_success
+        inout("rsi") a1 => a1, // oepration  -> capablity_error
+        in("rdx")  a2, // destination index
         out("rcx") _,
         out("r11") _,
         options(nostack),
