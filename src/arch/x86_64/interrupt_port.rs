@@ -15,11 +15,10 @@ pub fn bind(
     unsafe {
         asm!(
         "syscall",
-        in("rdi") KernelCallType::CapabilityCall as Sword,
-        inout("rsi") a0 => a0, // descriptor -> is_success
-        inout("rdx") a1 => a1, // operation  -> capability_error
+        in("rax") KernelCallType::CapabilityCall as Sword,
+        inout("rdi") a0 => a0, // descriptor -> is_success
+        inout("rsi") a1 => a1, // operation  -> capability_error
         in("r8")     a2,       // target_notification_port
-        out("rax") _,
         out("rcx") _,
         out("r11") _,
         options(nostack),
@@ -37,10 +36,9 @@ pub fn unbind(descriptor: CapabilityDescriptor) -> CapabilityResult {
     unsafe {
         asm!(
         "syscall",
-        in("rdi") KernelCallType::CapabilityCall as Sword,
-        inout("rsi") a0 => a0, // descriptor -> is_success
-        inout("rdx") a1 => a1, // operation  -> capability_error
-        out("rax") _,
+        in("rax") KernelCallType::CapabilityCall as Sword,
+        inout("rdi") a0 => a0, // descriptor -> is_success
+        inout("rsi") a1 => a1, // operation  -> capability_error
         out("rcx") _,
         out("r11") _,
         options(nostack),
@@ -58,10 +56,9 @@ pub fn ack(descriptor: CapabilityDescriptor) -> CapabilityResult {
     unsafe {
         asm!(
         "syscall",
-        in("rdi") KernelCallType::CapabilityCall as Sword,
-        inout("rsi") a0 => a0, // descriptor -> is_success
-        inout("rdx") a1 => a1, // operation  -> capability_error
-        out("rax") _,
+        in("rax") KernelCallType::CapabilityCall as Sword,
+        inout("rdi") a0 => a0, // descriptor -> is_success
+        inout("rsi") a1 => a1, // operation  -> capability_error
         out("rcx") _,
         out("r11") _,
         options(nostack),
@@ -79,11 +76,10 @@ pub fn get_irq_number(descriptor: CapabilityDescriptor) -> Result<Word, Capabili
     unsafe {
         asm!(
         "syscall",
-        in("rdi") KernelCallType::CapabilityCall as Sword,
-        inout("rsi") a0 => a0, // descriptor -> is_success
-        inout("rdx") a1 => a1, // operation  -> capability_error
-        out("r8")     a2,      // irq_number
-        out("rax") _,
+        in("rax") KernelCallType::CapabilityCall as Sword,
+        inout("rdi") a0 => a0, // descriptor -> is_success
+        inout("rsi") a1 => a1, // operation  -> capability_error
+        out("rdx")     a2,      // irq_number
         out("rcx") _,
         out("r11") _,
         options(nostack),
