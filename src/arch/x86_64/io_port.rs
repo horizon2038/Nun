@@ -18,12 +18,11 @@ pub fn read(
     unsafe {
         asm!(
         "syscall",
-        in("rdi") KernelCallType::CapabilityCall as Sword,
-        inout("rsi") a0 => a0, // descriptor -> is_success
-        inout("rdx") a1 => a1, // oepration  -> capablity_error
-        inout("r8")  a2 => a2, // address
-        inout("r9")  a3 => a3, // byte_width
-        out("rax") _,
+        in("rax") KernelCallType::CapabilityCall as Sword,
+        inout("rdi") a0 => a0, // descriptor -> is_success
+        inout("rsi") a1 => a1, // oepration  -> capablity_error
+        inout("rdx")  a2 => a2, // address
+        inout("r8")  a3 => a3, // byte_width
         out("rcx") _,
         out("r11") _,
         options(nostack),
@@ -51,13 +50,12 @@ pub fn write(
     unsafe {
         asm!(
         "syscall",
-        in("rdi") KernelCallType::CapabilityCall as Sword,
-        inout("rsi") a0 => a0, // descriptor -> is_success
-        inout("rdx") a1 => a1, // oepration  -> capablity_error
-        in("r8")  a2,          // address
-        in("r9")  a3,        // byte_width
-        in("r10")  a4,        // data
-        out("rax") _,
+        in("rax") KernelCallType::CapabilityCall as Sword,
+        inout("rdi") a0 => a0, // descriptor -> is_success
+        inout("rsi") a1 => a1, // oepration  -> capablity_error
+        in("rdx")  a2,          // address
+        in("r8")  a3,        // byte_width
+        in("r9")  a4,        // data
         out("rcx") _,
         out("r11") _,
         options(nostack),
