@@ -16,11 +16,6 @@ pub unsafe fn configure_to_tls(
         .as_mut()
         .expect("ipc_buffer_ptr is null")
         .configure_message(10, ipc_buffer_raw);
-    /*
-    asm!("wrgsbase {}", in(reg) ipc_buffer_raw, options(nostack, nomem, preserves_flags));
-
-    Ok(())
-    */
 
     let configuration_info = process_control_block::ConfigurationInfo::new(
         false, false, false, false, false, false, false, true, false, false,
