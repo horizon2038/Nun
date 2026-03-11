@@ -5,9 +5,8 @@ pub fn write_char(c: char) {
     unsafe {
         asm!(
         "syscall",
-        in("rdi") KernelCallType::DebugCall as isize, // kernel call number 2 : debug::put_char
-        in("rsi") c as u16, // debug_write_char (ascii)
-        out("rax") _,
+        in("rax") KernelCallType::DebugCall as isize, // kernel call number 2 : debug::put_char
+        in("rdi") c as u16, // debug_write_char (ascii)
         out("rcx") _,
         out("r11") _,
         clobber_abi("system"),
