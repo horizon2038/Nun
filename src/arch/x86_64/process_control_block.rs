@@ -28,9 +28,9 @@ pub fn configure(
     let mut a6 = notification_port as Word;
     let mut a7 = ipc_port_resolver as Word;
     let mut a8 = instruction_pointer as Word;
+    let mut a9 = stack_pointer as Word;
 
     // TODO: implement this:
-    // configure_message_register(9, stack_pointer);
     // configure_message_register(10, thread_local_base);
     // configure_message_register(11, priority);
     // configure_message_register(12, affinity);
@@ -38,17 +38,17 @@ pub fn configure(
     unsafe {
         asm!(
         "syscall",
-        in("rdi") KernelCallType::CapabilityCall as Sword,
-        inout("rsi") a0 => a0, // descriptor -> is_success
-        inout("rdx") a1 => a1, // oepration  -> capablity_error
-        in("r8")     a2,       // info
-        in("r9")     a3,       // address_space_descriptor
-        in("r10")    a4,       // root_node_descriptor
-        in("r12")    a5,       // frame_ipc_buffer_descriptor
-        in("r13")    a6,       // notification_port
-        in("r14")    a7,       // ipc_port_resolver
-        in("r15")    a8,       // instruction_pointer
-        out("rax") _,
+        in("rax") KernelCallType::CapabilityCall as Sword,
+        inout("rdi") a0 => a0, // descriptor -> is_success
+        inout("rsi") a1 => a1, // oepration  -> capablity_error
+        in("rdx")    a2,       // info
+        in("r8")     a3,       // address_space_descriptor
+        in("r9")     a4,       // root_node_descriptor
+        in("r10")    a5,       // frame_ipc_buffer_descriptor
+        in("r12")    a6,       // notification_port
+        in("r13")    a7,       // ipc_port_resolver
+        in("r14")    a8,       // instruction_pointer
+        in("r15")    a9,       // stack_pointer
         out("rcx") _,
         out("r11") _,
         options(nostack),
@@ -78,10 +78,9 @@ pub fn resume(descriptor: CapabilityDescriptor) -> CapabilityResult {
     unsafe {
         asm!(
         "syscall",
-        in("rdi") KernelCallType::CapabilityCall as Sword,
-        inout("rsi") a0 => a0, // descriptor -> is_success
-        inout("rdx") a1 => a1, // oepration  -> capablity_error
-        out("rax") _,
+        in("rax") KernelCallType::CapabilityCall as Sword,
+        inout("rdi") a0 => a0, // descriptor -> is_success
+        inout("rsi") a1 => a1, // oepration  -> capablity_error
         out("rcx") _,
         out("r11") _,
         options(nostack),
@@ -99,10 +98,9 @@ pub fn suspend(descriptor: CapabilityDescriptor) -> CapabilityResult {
     unsafe {
         asm!(
         "syscall",
-        in("rdi") KernelCallType::CapabilityCall as Sword,
-        inout("rsi") a0 => a0, // descriptor -> is_success
-        inout("rdx") a1 => a1, // oepration  -> capablity_error
-        out("rax") _,
+        in("rax") KernelCallType::CapabilityCall as Sword,
+        inout("rdi") a0 => a0, // descriptor -> is_success
+        inout("rsi") a1 => a1, // oepration  -> capablity_error
         out("rcx") _,
         out("r11") _,
         options(nostack),
