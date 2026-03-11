@@ -24,15 +24,14 @@ pub fn convert(
     unsafe {
         asm!(
         "syscall",
-        in("rdi") KernelCallType::CapabilityCall as Sword,
-        inout("rsi") a0 => a0, // descriptor -> is_success
-        inout("rdx") a1 => a1, // oepration  -> capablity_error
-        in("r8")  a2, // capability type
-        in("r9")  a3, // specific bits
-        in("r10") a4, // count
-        in("r12") a5, // node descriptor
-        in("r13") a6, // node index
-        out("rax") _,
+        in("rax") KernelCallType::CapabilityCall as Sword,
+        inout("rdi") a0 => a0, // descriptor -> is_success
+        inout("rsi") a1 => a1, // operation  -> capability_error
+        in("rdx") a2, // capability type
+        in("r8")  a3, // specific bits
+        in("r9")  a4, // count
+        in("r10") a5, // node descriptor
+        in("r12") a6, // node index
         out("rcx") _,
         out("r11") _,
         options(nostack),
