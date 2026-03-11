@@ -19,13 +19,12 @@ pub fn make_port(
     unsafe {
         asm!(
         "syscall",
-        in("rdi") KernelCallType::CapabilityCall as Sword,
-        inout("rsi") a0 => a0, // descriptor -> is_success
-        inout("rdx") a1 => a1, // operation  -> capability_error
-        in("r8")     a2,       // irq_number
-        in("r9")     a3,       // target_node
-        in("r10")    a4,       // target_node_index
-        out("rax") _,
+        in("rax") KernelCallType::CapabilityCall as Sword,
+        inout("rdi") a0 => a0, // descriptor -> is_success
+        inout("rsi") a1 => a1, // operation  -> capability_error
+        in("rdx")     a2,       // irq_number
+        in("r8")     a3,       // target_node
+        in("r9")    a4,       // target_node_index
         out("rcx") _,
         out("r11") _,
         options(nostack),
