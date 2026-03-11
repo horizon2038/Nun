@@ -11,11 +11,10 @@ pub fn notify(descriptor: CapabilityDescriptor) -> CapabilityResult {
     unsafe {
         asm!(
         "syscall",
-        in("rdi") KernelCallType::CapabilityCall as Sword,
-        inout("rsi") a0 => a0, // descriptor -> is_success
-        inout("rdx") a1 => a1, // operation  -> capability_error
-        out("r8") a2, // identifier
-        out("rax") _,
+        in("rax") KernelCallType::CapabilityCall as Sword,
+        inout("rdi") a0 => a0, // descriptor -> is_success
+        inout("rsi") a1 => a1, // operation  -> capability_error
+        out("rdx") a2, // identifier
         out("rcx") _,
         out("r11") _,
         options(nostack),
@@ -35,11 +34,10 @@ pub fn wait(descriptor: CapabilityDescriptor) -> CapabilityResult {
     unsafe {
         asm!(
         "syscall",
-        in("rdi") KernelCallType::CapabilityCall as Sword,
-        inout("rsi") a0 => a0, // descriptor -> is_success
-        inout("rdx") a1 => a1, // operation  -> capability_error
-        out("r8") a2, // identifier
-        out("rax") _,
+        in("rax") KernelCallType::CapabilityCall as Sword,
+        inout("rdi") a0 => a0, // descriptor -> is_success
+        inout("rsi") a1 => a1, // operation  -> capability_error
+        out("rdx") a2, // identifier
         out("rcx") _,
         out("r11") _,
         options(nostack),
@@ -59,11 +57,10 @@ pub fn poll(descriptor: CapabilityDescriptor) -> CapabilityResult {
     unsafe {
         asm!(
         "syscall",
-        in("rdi") KernelCallType::CapabilityCall as Sword,
-        inout("rsi") a0 => a0, // descriptor -> is_success
-        inout("rdx") a1 => a1, // operation  -> capability_error
-        out("r8") a2, // identifier
-        out("rax") _,
+        in("rax") KernelCallType::CapabilityCall as Sword,
+        inout("rdi") a0 => a0, // descriptor -> is_success
+        inout("rsi") a1 => a1, // operation  -> capability_error
+        out("rdx") a2, // identifier
         out("rcx") _,
         out("r11") _,
         options(nostack),
@@ -84,11 +81,10 @@ pub fn identify(descriptor: CapabilityDescriptor, new_identifier: Word) -> Capab
     unsafe {
         asm!(
         "syscall",
-        in("rdi") KernelCallType::CapabilityCall as Sword,
-        inout("rsi") a0 => a0, // descriptor -> is_success
-        inout("rdx") a1 => a1, // operation  -> capability_error
-        in("r8")     a2,       // identifier
-        out("rax") _,
+        in("rax") KernelCallType::CapabilityCall as Sword,
+        inout("rdi") a0 => a0, // descriptor -> is_success
+        inout("rsi") a1 => a1, // operation  -> capability_error
+        in("rdx")     a2,       // identifier
         out("rcx") _,
         out("r11") _,
         options(nostack),
