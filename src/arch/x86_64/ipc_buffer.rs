@@ -25,6 +25,12 @@ pub unsafe fn configure_to_tls(
         .expect("ipc_buffer_ptr is null")
         .configure_message(TLS_BASE_OFFSET, ipc_buffer_raw);
 
+    // configure thread_local_base
+    ipc_buffer_ptr
+        .as_mut()
+        .expect("ipc_buffer_ptr is null")
+        .configure_message(10, tls_base);
+
     crate::arch::process_control_block::configure(
         _pcb_descriptor,
         configuration_info,
@@ -42,7 +48,7 @@ pub unsafe fn configure_to_tls(
 }
 
 #[inline(always)]
-pub unsafe fn get_ipc_buffer() -> *mut IpcBuffer {
+pub unsafe fn unsafe_get_ipc_buffer() -> *mut IpcBuffer {
     let ipc_buffer_ptr: *mut IpcBuffer;
     asm!(
         "mov {}, gs:[0x00]",
@@ -51,4 +57,9 @@ pub unsafe fn get_ipc_buffer() -> *mut IpcBuffer {
     );
 
     ipc_buffer_ptr
+}
+
+#[inline(always)]
+pub fn get_ipc_buffer() -> &'static mut IpcBuffer {
+    unsafe { &mut *unsafe_get_ipc_buffer() }
 }
