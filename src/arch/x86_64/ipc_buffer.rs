@@ -1,7 +1,7 @@
 use core::arch::asm;
 
-use crate::ipc_buffer::IpcBuffer;
-use crate::{CapabilityDescriptor, CapabilityResult};
+use crate::ipc_buffer::{IpcBuffer, IPC_BUFFER_SIZE};
+use crate::{CapabilityDescriptor, CapabilityResult, BYTE_BITS, PAGE_SIZE};
 
 use crate::arch;
 use crate::capability_call::process_control_block;
@@ -11,15 +11,19 @@ pub unsafe fn configure_to_tls(
     _pcb_descriptor: CapabilityDescriptor,
     ipc_buffer_ptr: *mut IpcBuffer,
 ) -> CapabilityResult {
-    let ipc_buffer_raw = ipc_buffer_ptr as usize;
-    ipc_buffer_ptr
-        .as_mut()
-        .expect("ipc_buffer_ptr is null")
-        .configure_message(10, ipc_buffer_raw);
-
     let configuration_info = process_control_block::ConfigurationInfo::new(
         false, false, false, false, false, false, false, true, false, false,
     );
+
+    // user can access IPC buffer via gs:[0x00]
+    const TLS_BASE_OFFSET: usize = IPC_BUFFER_SIZE - 2;
+    let ipc_buffer_raw = ipc_buffer_ptr as usize;
+    let tls_base = ipc_buffer_raw + (TLS_BASE_OFFSET * BYTE_BITS);
+
+    ipc_buffer_ptr
+        .as_mut()
+        .expect("ipc_buffer_ptr is null")
+        .configure_message(TLS_BASE_OFFSET, ipc_buffer_raw);
 
     crate::arch::process_control_block::configure(
         _pcb_descriptor,
@@ -31,7 +35,7 @@ pub unsafe fn configure_to_tls(
         0,
         0,
         0,
-        ipc_buffer_raw,
+        tls_base,
         0,
         0,
     )
@@ -39,8 +43,12 @@ pub unsafe fn configure_to_tls(
 
 #[inline(always)]
 pub unsafe fn get_ipc_buffer() -> *mut IpcBuffer {
-    let mut gs_base: usize;
-    asm!("rdgsbase {}", out(reg) gs_base, options(nostack, nomem, preserves_flags));
+    let ipc_buffer_ptr: *mut IpcBuffer;
+    asm!(
+        "mov {}, gs:[0x00]",
+        out(reg) ipc_buffer_ptr,
+        options(nostack, nomem, preserves_flags)
+    );
 
-    gs_base as *mut IpcBuffer
+    ipc_buffer_ptr
 }
