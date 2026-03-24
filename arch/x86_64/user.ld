@@ -41,8 +41,8 @@ SECTIONS
         __init_ipc_buffer_end = .;
 
         __init_stack_start = .;
-        /* allocate 4KiB */
-        . += 0x1000;
+        /* allocate 128KiB */
+        . += 0x20000;
         __init_stack_end = .;
 
         __bss_start = .;
