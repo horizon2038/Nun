@@ -43,19 +43,23 @@ impl InitInfo {
             return None;
         }
 
-        let common_offset: Word = WORD_BITS - BYTE_BITS;
+        const PROCESS_ROOT_NODE_RADIX: Word = 8;
+        const GENERIC_NODE_RADIX: Word = 7;
+
+        let common_offset_bit: Word = WORD_BITS - BYTE_BITS;
         let base_descriptor: Word = InitSlotOffset::GenericNode.as_descriptor();
 
-        // the current base has depth set for node
-        // therefore, it is necessary to reset the depth
-        let mask: Word = !(((1 << BYTE_BITS) - 1) << common_offset);
+        let depth_mask: Word = !(((1 << BYTE_BITS) - 1) << common_offset_bit);
+
+        let target_depth: Word = PROCESS_ROOT_NODE_RADIX + GENERIC_NODE_RADIX;
+        let generic_index_shift: Word =
+            common_offset_bit - PROCESS_ROOT_NODE_RADIX - GENERIC_NODE_RADIX;
 
         Some(
-            (base_descriptor & mask)
-                | (common_offset << common_offset)
-                | (index << common_offset.saturating_sub(8 + 7)), // root node + generic node
+            (base_descriptor & depth_mask)
+                | (target_depth << common_offset_bit)
+                | (index << generic_index_shift),
         )
-        // 8 : initial node index
     }
 }
 
