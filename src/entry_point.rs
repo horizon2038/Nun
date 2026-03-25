@@ -58,5 +58,5 @@ fn configure_initial_ipc_buffer_to_tls(
             .expect("Nun initialization failed: ipc_buffer is null")
     };
 
-    crate::arch::ipc_buffer::configure_to_tls(pcb_descriptor, ipc_buffer)
+    crate::arch::ipc_buffer::early_configure_to_tls(pcb_descriptor, ipc_buffer)
 }
