@@ -13,6 +13,7 @@ pub mod notification_port;
 pub mod process_control_block;
 
 // yield
+pub mod yield_call;
 
 // debug call
 pub mod debug_call;
