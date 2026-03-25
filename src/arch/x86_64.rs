@@ -1,6 +1,8 @@
 pub mod entry_point;
 
 // capability call
+pub mod address_space;
+pub mod frame;
 pub mod generic;
 pub mod interrupt_port;
 pub mod interrupt_region;

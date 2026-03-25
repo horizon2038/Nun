@@ -1,3 +1,5 @@
+pub mod address_space;
+pub mod frame;
 pub mod generic;
 pub mod interrupt_port;
 pub mod interrupt_region;
@@ -5,5 +7,6 @@ pub mod io_port;
 pub mod ipc_port;
 pub mod node;
 pub mod notification_port;
+pub mod page_table;
 pub mod process_control_block;
 pub mod virtual_cpu;
