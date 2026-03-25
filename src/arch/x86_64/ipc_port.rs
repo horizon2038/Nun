@@ -3,6 +3,12 @@ use core::arch::asm;
 use crate::capability_call::ipc_port;
 use crate::types::*;
 
+use crate::arch::ipc_buffer;
+
+const HARDWARE_MR_COUNT_MAX: usize = 10;
+const RESERVED_MR_COUNT: usize = 4;
+const USABLE_HARDWARE_MR_COUNT_MAX: usize = HARDWARE_MR_COUNT_MAX - RESERVED_MR_COUNT;
+
 #[inline(always)]
 fn execute_ipc(
     descriptor: CapabilityDescriptor,
@@ -10,18 +16,21 @@ fn execute_ipc(
     info: &mut ipc_port::MessageInfo,
     identifier: &mut Word,
 ) -> CapabilityResult {
+    // for result
     let mut a0 = descriptor;
     let mut a1 = operation as Word;
+
+    let mut ipc_buffer = ipc_buffer::get_ipc_buffer();
 
     let mut a2 = Word::try_from(info.data).unwrap_or(0);
     let mut a3 = 0; // identifier
 
-    // get messages from ipc buffer
-    // let mut a4 = *arg4;
-    // let mut a5 = *arg5;
-    // let mut a6 = *arg6;
-    // let mut a7 = *arg7;
-    // let mut a8 = *arg8;
+    let mut a4 = ipc_buffer.get_message(4);
+    let mut a5 = ipc_buffer.get_message(5);
+    let mut a6 = ipc_buffer.get_message(6);
+    let mut a7 = ipc_buffer.get_message(7);
+    let mut a8 = ipc_buffer.get_message(8);
+    let mut a9 = ipc_buffer.get_message(9);
 
     unsafe {
         asm!(
@@ -31,11 +40,12 @@ fn execute_ipc(
         inout("rsi") a1 => a1, // oepration  -> capablity_error
         inout("rdx") a2 => a2, // info
         out("r8")    a3,       // identifier (receive)
-        // inout("r10") a4 => a4,
-        // inout("r12") a5 => a5,
-        // inout("r13") a6 => a6,
-        // inout("r14") a7 => a7,
-        // inout("r15") a8 => a8,
+        inout("r9") a4 => a4,
+        inout("r10") a5 => a5,
+        inout("r12") a6 => a6,
+        inout("r13") a7 => a7,
+        inout("r14") a8 => a8,
+        inout("r15") a9 => a9,
         out("rcx") _,
         out("r11") _,
         options(nostack),
@@ -46,11 +56,12 @@ fn execute_ipc(
     *identifier = a3;
 
     // restore messages to ipc buffer
-    // *arg4 = a4;
-    // *arg5 = a5;
-    // *arg6 = a6;
-    // *arg7 = a7;
-    // *arg8 = a8;
+    ipc_buffer.configure_message(4, a4);
+    ipc_buffer.configure_message(5, a5);
+    ipc_buffer.configure_message(6, a6);
+    ipc_buffer.configure_message(7, a7);
+    ipc_buffer.configure_message(8, a8);
+    ipc_buffer.configure_message(9, a9);
 
     convert_capability_result(a0, a1)
 }
@@ -84,9 +95,9 @@ pub fn call(
 }
 
 #[inline(always)]
-pub fn reply(info: ipc_port::MessageInfo) -> CapabilityResult {
+pub fn reply(target: CapabilityDescriptor, info: ipc_port::MessageInfo) -> CapabilityResult {
     execute_ipc(
-        0, // descriptor is not used (reply)
+        target,
         ipc_port::OperationType::Reply,
         &mut info.clone(), // only input
         &mut 0,
