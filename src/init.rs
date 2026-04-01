@@ -80,8 +80,8 @@ impl AsCapabilityDescriptor for InitSlotOffset {
     #[inline(always)]
     fn as_descriptor(&self) -> CapabilityDescriptor {
         const PROCESS_ROOT_NODE_RADIX: Word = 8;
-        const PROCESS_PAGE_TABLE_NODE_RADIX: Word = 7;
-        const PROCESS_FRAME_NODE_RADIX: Word = 7;
+        const PROCESS_PAGE_TABLE_NODE_RADIX: Word = 7; // 7
+        const PROCESS_FRAME_NODE_RADIX: Word = 14;
         const GENERIC_NODE_RADIX: Word = 7;
 
         let common_offset_bit = WORD_BITS - BYTE_BITS;
