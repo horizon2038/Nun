@@ -63,6 +63,8 @@ pub fn unmap(
     convert_capability_result(a0, a1)
 }
 
+use crate::debug_log;
+
 #[inline(always)]
 pub fn get_unset_depth(
     descriptor: CapabilityDescriptor,
@@ -70,8 +72,7 @@ pub fn get_unset_depth(
 ) -> Result<usize, CapabilityError> {
     let mut a0 = descriptor;
     let mut a1 = address_space::OperationType::GetUnsetDepth as Word;
-    let mut a2 = address as Word;
-    let mut a3 = 0usize; // depth
+    let mut a2 = address as Word; // address (r8)
 
     unsafe {
         asm!(
@@ -79,8 +80,7 @@ pub fn get_unset_depth(
         in("rax") KernelCallType::CapabilityCall as Sword,
         inout("rdi") a0 => a0, // descriptor -> is_success
         inout("rsi") a1 => a1, // oepration  -> capablity_error
-        in("rdx")    a2,       // address
-        out("r8")     a3,       // depth
+        inout("rdx") a2 => a2, // address -> depth
         out("rcx") _,
         out("r11") _,
         options(nostack),
@@ -88,7 +88,10 @@ pub fn get_unset_depth(
     }
 
     match convert_capability_result(a0, a1) {
-        Ok(()) => Ok(a3),
+        Ok(()) => {
+            let depth = a2;
+            Ok(depth)
+        }
         Err(e) => Err(e),
     }
 }

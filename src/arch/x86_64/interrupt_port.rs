@@ -18,7 +18,7 @@ pub fn bind(
         in("rax") KernelCallType::CapabilityCall as Sword,
         inout("rdi") a0 => a0, // descriptor -> is_success
         inout("rsi") a1 => a1, // operation  -> capability_error
-        in("r8")     a2,       // target_notification_port
+        in("rdx")     a2,       // target_notification_port
         out("rcx") _,
         out("r11") _,
         options(nostack),
