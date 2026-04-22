@@ -26,7 +26,7 @@ pub fn notify(descriptor: CapabilityDescriptor) -> CapabilityResult {
 }
 
 #[inline(always)]
-pub fn wait(descriptor: CapabilityDescriptor) -> CapabilityResult {
+pub fn wait(descriptor: CapabilityDescriptor) -> Result<Word, CapabilityError> {
     let mut a0 = descriptor;
     let mut a1 = notification_port::OperationType::Wait as Word;
     let mut a2 = 0usize; // flag word (return value)
@@ -45,11 +45,14 @@ pub fn wait(descriptor: CapabilityDescriptor) -> CapabilityResult {
         );
     }
 
-    convert_capability_result(a0, a1)
+    match convert_capability_result(a0, a1) {
+        Ok(()) => Ok(a2 as Word),
+        Err(e) => Err(e),
+    }
 }
 
 #[inline(always)]
-pub fn poll(descriptor: CapabilityDescriptor) -> CapabilityResult {
+pub fn poll(descriptor: CapabilityDescriptor) -> Result<Word, CapabilityError> {
     let mut a0 = descriptor;
     let mut a1 = notification_port::OperationType::Poll as Word;
     let mut a2 = 0usize; // flag word (return value)
@@ -68,7 +71,10 @@ pub fn poll(descriptor: CapabilityDescriptor) -> CapabilityResult {
         );
     }
 
-    convert_capability_result(a0, a1)
+    match convert_capability_result(a0, a1) {
+        Ok(()) => Ok(a2 as Word),
+        Err(e) => Err(e),
+    }
 }
 
 #[inline(always)]
