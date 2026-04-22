@@ -69,10 +69,12 @@ use crate::debug_log;
 pub fn get_unset_depth(
     descriptor: CapabilityDescriptor,
     address: VirtualAddress,
+    size_bits: usize,
 ) -> Result<usize, CapabilityError> {
     let mut a0 = descriptor;
     let mut a1 = address_space::OperationType::GetUnsetDepth as Word;
     let mut a2 = address as Word; // address (r8)
+    let mut a3 = size_bits as Word; // FIXME: 2^12 = 4KiB
 
     unsafe {
         asm!(
@@ -81,6 +83,7 @@ pub fn get_unset_depth(
         inout("rdi") a0 => a0, // descriptor -> is_success
         inout("rsi") a1 => a1, // oepration  -> capablity_error
         inout("rdx") a2 => a2, // address -> depth
+        in("r8")     a3,       // leaf size bits
         out("rcx") _,
         out("r11") _,
         options(nostack),
