@@ -10,22 +10,5 @@ pub use debug_log::*;
 pub mod entry_point;
 pub mod panic;
 
-// basic types
-mod types;
-pub use types::*;
-
-mod init;
-pub use init::*;
-
-mod frame_buffer_info;
-pub use frame_buffer_info::*;
-
-mod ipc_buffer;
-pub use ipc_buffer::*;
-
-// arch-specific things
-pub mod arch;
-
-// kernel call
-pub mod capability_call;
-pub mod yield_call;
+pub use a9n_abi::*;
+pub use a9n_abi::arch_entry;

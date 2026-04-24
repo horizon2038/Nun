@@ -1,5 +1,4 @@
 use crate::arch::debug_call;
-use crate::types::*;
 use core::fmt;
 
 #[macro_export]

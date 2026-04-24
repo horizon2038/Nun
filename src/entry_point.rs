@@ -31,7 +31,7 @@ macro_rules! entry {
     };
 }
 
-use crate::types::AsCapabilityDescriptor;
+use crate::AsCapabilityDescriptor;
 
 pub fn configure_init(init_info: &crate::InitInfo) {
     println!("Configuring <init> ...");
@@ -48,9 +48,9 @@ pub fn configure_init(init_info: &crate::InitInfo) {
 }
 
 fn configure_initial_ipc_buffer_to_tls(
-    pcb_descriptor: crate::types::CapabilityDescriptor,
+    pcb_descriptor: crate::CapabilityDescriptor,
     init_info: &crate::InitInfo,
-) -> crate::types::CapabilityResult {
+) -> crate::CapabilityResult {
     let ipc_buffer = unsafe {
         init_info
             .ipc_buffer
