@@ -1,14 +1,14 @@
 [package]
 name = "nun"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 build = "build.rs"
 
 [dependencies]
-a9n_abi = "0.2.0"
+a9n_abi = "0.3.0"
 
 [build-dependencies]
 
-[unstable]
+G [unstable]
 build-std = ["core", "compiler_builtins"]
 build-std-features = ["compiler-builtins-mem"]

@@ -42,7 +42,7 @@ SECTIONS
 
         __init_stack_start = .;
         /* allocate 128KiB */
-        . += 0x20000;
+        . += 0x200000;
         __init_stack_end = .;
 
         __bss_start = .;
@@ -50,6 +50,8 @@ SECTIONS
         *(.bss.*);
         __bss_end = .;
     }
+
+    . = 0x2000000000;
 
     /DISCARD/ :
     {
