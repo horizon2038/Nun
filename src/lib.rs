@@ -10,5 +10,5 @@ pub use debug_log::*;
 pub mod entry_point;
 pub mod panic;
 
-pub use a9n_abi::*;
 pub use a9n_abi::arch_entry;
+pub use a9n_abi::*;
