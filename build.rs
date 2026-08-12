@@ -1,6 +1,3 @@
-use std::env;
-use std::path::PathBuf;
-
 fn main() {
     let arch = std::env::var("ARCH").unwrap_or_default();
 

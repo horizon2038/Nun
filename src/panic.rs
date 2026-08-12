@@ -1,4 +1,3 @@
-use crate::debug_log;
 use core::panic::PanicInfo;
 
 #[panic_handler]
